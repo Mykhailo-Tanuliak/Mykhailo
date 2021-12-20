@@ -1,0 +1,186 @@
+create database riel
+use riel
+
+	
+	
+
+
+ CREATE TABLE demand 
+ (
+	id_demand int not null primary key,
+	type_object nvarchar(15) not null,
+	ar_demand int not null,
+	floor char(2) not null,
+	cost char(5) not null,
+	klient int not null 
+)
+
+	ALTER TABLE demand 
+	add constraint FK_area_demand foreign key(ar_demand) references area(id_area)
+
+	ALTER TABLE demand 
+	add constraint FK_client_demand foreign key(klient) references client(id_client)
+
+	ALTER TABLE demand
+	alter column cost int not null
+
+CREATE TABLE area
+(
+	id_area int not null primary key,
+	name_area nvarchar(20) not null
+)
+
+CREATE TABLE client 
+(
+	id_client int not null primary key,
+	lastname nvarchar(20) not null,
+	name_client nvarchar(10) not null,
+	surname nvarchar(10) not null,
+	passport nvarchar(10) not null,
+	phone_number char(10) not null
+)
+
+CREATE TABLE offers 
+(
+	id_offer int not null primary key,
+	type_object_offer nvarchar(15) not null,
+	area_offers int not null,
+	adress nvarchar(50) not null,
+    floor char(2) not null,
+	cnt_room char(1) not null,
+	square nvarchar(5) not null,
+	price varchar(10) not null,
+	seller int not null
+) 
+
+	ALTER TABLE offers
+	add constraint FK_client_offers foreign key(seller) references client(id_client)
+
+	ALTER TABLE offers
+	add constraint FK_area_offers foreign key(area_offers) references area(id_area)
+	
+
+create table agreement
+(
+	id_agreement int not null primary key,
+	rialtor int not null,
+	id_offer int not null,
+	buyer int not null,
+	date_offer nvarchar(11) not null
+)
+
+	ALTER TABLE agreement
+	add constraint FK_client_agreement foreign key(buyer) references client(id_client)
+
+	ALTER TABLE agreement
+	add constraint FK_rialtors_agreement foreign key(rialtor) references rialtors(id_rialtors)
+
+CREATE TABLE rialtors 
+(
+	id_rialtors int  NOT NULL primary key,
+	name nvarchar(20) NOT NULL,
+	surname nvarchar(20) NOT NULL,
+	last_name nvarchar(20) NOT NULL,
+	phone nvarchar(15) NOT NULL
+)
+
+
+INSERT INTO demand
+	VALUES ('1', 'Квартира', '1', '5', '7000', '1'),
+	('2', 'Квартира', '2', '2', '6500', '2'),
+	('3', 'Будинок', '5', '5', '7500', '3'),
+	('4', 'Квартира', '1', '8', '7000', '4'),
+	('5', 'Квартира', '5', '11', '6000', '5'),
+	('6', 'Будинок', '3', '7', '9000', '6'),
+	('7', 'Квартира', '4', '5', '5600', '8'),
+	('8', 'Квартира', '3', '6', '17000', '7')
+
+INSERT INTO rialtors 
+	VALUES ('1', 'Сергій', 'Петрович', 'Боднаренко', '0930641305'),
+	('2', 'Катерина', 'Анатоліївна', 'Пономаренко', '0967634931'),
+	('3', 'Володимир', 'Богданович', 'Коваль', '0987675098'),
+	('4', 'Ганна', 'Михайлівна', 'Войтович', '0964472342'),
+	('5', 'Василь', 'Іванович', 'Мельничук', '0634547681'),
+	('6', 'Роман', 'Андрійович', 'Захарчук', '0996578009'),
+	('7', 'Юлія', 'Степанівна', 'Ткаченко', '0931090347'),
+	('8', 'Олег', 'Володимирович', 'Сидорчук', '0677244761'),
+	('9', 'Назарій', 'Любомирович', 'Коваленко', '0939894737'),
+	('10', 'Вікторія', 'Тарасівна', 'Колодій', '0963819090')
+
+INSERT INTO client 
+	VALUES ('1', 'Тимчук', 'Григорій', 'Іванович', 'ЦП589345', '0930641305'),
+	('2', 'Никочук', 'Іван', 'Іванович', 'УУ889885', '0963819090'),
+    ('3', 'Морзанич', 'Іван', 'Іванович', 'АФ534381', '0987675098'),
+	('4', 'Мартиновський', 'Живослав', 'Панасович', 'АФ589465', '0964472342'),
+	('5', 'Савчинський', 'Мусій', 'Артемович', 'РА872385', '0634547681'),
+	('6', 'Яновський', 'Яснозір', 'Леонідович', 'ЛО795185', '0996578009'),
+	('7', 'Старовойт', 'Степан', 'Сарматович', 'ДО565885', '0931090347'),
+	('8', 'Бабиченко', 'Володимир', 'Михайлович', 'АР235485', '0677244761'),
+	('9', 'Цибенко', 'Любомир', 'Іванович', 'МД235799', '0939894737'),
+	('10', 'Дичко', 'Тарас', 'Вікторович','АФ586385', '0963819090')
+
+INSERT INTO area
+	VALUES ('1', 'Галицький'),
+	('2', 'Залізничний'),
+	('3', 'Личаківський'),
+	('4', 'Франківський'),
+	('5', 'Шевченківський'),
+	('6', 'Сихівський')
+
+INSERT INTO offers
+	VALUES ('1', 'Квартира', '6', 'Чукаріна, 1б, кв. 1', '1', '2', '55', '7300', '1'),
+	('2', 'Квартира', '6', 'Гната Хоткевича, 6, кв. 42', '14', '2', '57', '7500', '4'),
+	('3', 'Будинок', '2', 'Залізнична, 12,', '1', '4', '75', '9000', '7'),
+	('4', 'Квартира', '3', 'Пасічна, 26, кв. 2', '1', '3', '75', '8200', '1'),
+	('5', 'Будинок', '6', 'Кавалерідзе, 13', '1', '5', '90', '10000', '10'),
+	('6', 'Квартира', '1', 'пр. Шевченка, 3, кв. 2', '1', '2', '45', '7000', '6'),
+	('7', 'Квартира', '5', 'пр. Чорновола, кв. 26', '14', '2', '60', '9000', '9')
+	
+INSERT INTO agreement
+	VALUES ('1', '7', '3', '3', '24.09.2021'),
+	('2', '1', '1', '7', '05.10.2021'),
+	('3', '9', '7', '10', '11.10.2021'),
+	('4', '10', '5', '2', '24.11.2021'),
+	('5', '6', '6', '9', '06.12.2021')
+
+
+	-- 1. Показати перші три продажі квартири: хто продав, кому та коли
+
+	SELECT r.name, r.surname, r.last_name, c.name_client, c.surname, c.lastname, ag.date_offer
+	FROM rialtors as r 
+	LEFT JOIN agreement as ag ON r.id_rialtors=ag.rialtor
+	LEFT JOIN client as c ON c.id_client=ag.buyer
+	WHERE ag.id_agreement <= '3'
+
+	-- 2. 
+	SELECT a.id_area as 'код району', d.id_demand as 'код попиту', d.cost as 'ціна', a.name_area as 'назва району'
+	FROM dbo.demand as d INNER JOIN dbo.area as a
+	ON d.ar_demand=a.id_area
+	WHERE a.id_area <= '3'
+	order by d.cost
+
+	--3. Показати попит на квартири в Личаківському районі
+
+	SELECT a.name_area as 'Район', d.type_object as 'Тип обєкту', d.cost as 'Ціна за кв/м', c.name_client as 'Імя', c.lastname as 'Прізвище', c.phone_number as 'Номер телефону'
+	FROM demand as d 
+	LEFT JOIN area as a ON d.ar_demand=a.id_area
+	LEFT JOIN client as c ON d.klient=c.id_client
+	WHERE a.id_area = '3'
+
+	--4. Показати клієнтів з номерами телефонів Київстар (відсортувати по Прізвищу)
+	
+	SELECT *
+	FROM client
+	WHERE phone_number LIKE '0[6,9][6,7,8][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+	ORDER BY lastname
+
+	--5. Порахувати середню варстіть кв/м з таблиці попит
+
+	SELECT	AVG(cost) as 'Середня вартість кв/м'
+	FROM demand 
+	
+	--6. Відсортувати об'єкти за ціною (спадаюче сортування)
+
+	SELECT*
+	FROM offers
+	ORDER BY price DESC
