@@ -1,10 +1,6 @@
 create database riel
 use riel
 
-	
-	
-
-
  CREATE TABLE demand 
  (
 	id_demand int not null primary key,
